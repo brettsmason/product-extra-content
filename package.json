@@ -33,5 +33,13 @@
 		"@wordpress/scripts": "^30.26.0",
 		"lefthook": "latest",
 		"postcss-preset-env": "latest"
-	}
+	},
+	"files": [
+		"product-extra-content.php",
+		"includes",
+		"build",
+		"assets",
+		"languages",
+		"vendor"
+	]
 }

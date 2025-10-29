@@ -1,0 +1,77 @@
+name: Build and Tag
+
+env:
+  NODE_VERSION: '22'
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+jobs:
+  release:
+    # Only proceed if the PR was merged into main
+    if: github.event.pull_request.merged == true
+    name: Build, package, and release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: zip, dom, simplexml
+          coverage: none
+
+      - name: Install Composer dependencies (no-dev)
+        run: composer install --no-interaction --prefer-dist --no-dev -o
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Translations
+        run: npm run pot
+
+      - name: Derive version from package.json
+        run: echo "VERSION=$(jq -r .version package.json)" >> "$GITHUB_ENV"
+
+      - name: Package plugin with @wordpress/scripts plugin-zip
+        run: |
+          npm run plugin-zip
+          mkdir -p dist
+          mv ./*.zip dist/
+
+      - name: Create tag if missing
+        run: |
+          TAG="${VERSION}"
+          if git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
+            echo "Tag ${TAG} already exists"
+          else
+            git tag -a "${TAG}" -m "Release ${TAG}"
+            git push origin "${TAG}"
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: Version ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          files: |
+            dist/*.zip

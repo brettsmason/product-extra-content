@@ -28,7 +28,7 @@ const ProductExtraContentPanel = () => {
 					setMeta({ ...(meta || {}), product_ids: ids })
 				}
 				placeholder={__(
-					'Search for products...',
+					'Search for products…',
 					'product-extra-content'
 				)}
 			/>
@@ -41,7 +41,7 @@ const ProductExtraContentPanel = () => {
 					setMeta({ ...(meta || {}), category_ids: ids })
 				}
 				placeholder={__(
-					'Search for categories...',
+					'Search for categories…',
 					'product-extra-content'
 				)}
 			/>
