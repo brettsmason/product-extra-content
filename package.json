@@ -1,0 +1,37 @@
+{
+	"name": "product-extra-content",
+	"version": "0.1.0",
+	"description": "Display extra content for your WooCommerce product.",
+	"author": "eighteen73",
+	"license": "GPL-2.0-or-later",
+	"homepage": "https://eighteen73.co.uk",
+	"scripts": {
+		"postinstall": "composer install -o",
+		"start": "wp-scripts start --webpack-copy-php --experimental-modules --blocks-manifest",
+		"build": "wp-scripts build  --webpack-copy-php --experimental-modules --blocks-manifest",
+		"check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+		"format": "npm run format:css && npm run format:js && format:php",
+		"format:css": "stylelint --fix \"./src/**/*.scss\"",
+		"format:js": "eslint --fix \"./src/**/*.js\"",
+		"format:php": "composer run format",
+		"lint": "npm run lint:css && npm run lint:js && npm run lint:php",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"lint:php": "composer run lint",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"pot": "wp i18n make-pot . languages/product-extra-content.pot --domain=product-extra-content --exclude=node_modules,vendor,.git"
+	},
+	"devDependencies": {
+		"@eighteen73/eslint-config-wordpress": "latest",
+		"@eighteen73/stylelint-config-wordpress": "latest",
+		"@wordpress/browserslist-config": "^6.33.0",
+		"@wordpress/prettier-config": "^4.33.0",
+		"@wordpress/scripts": "^30.26.0",
+		"lefthook": "latest",
+		"postcss-preset-env": "latest"
+	}
+}
