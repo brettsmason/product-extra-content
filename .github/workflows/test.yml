@@ -1,0 +1,30 @@
+name: Lint and Test
+
+env:
+  NODE_VERSION: '22'
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  lint:
+    name: Run NPM lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: zip, dom, simplexml
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: composer install --no-interaction --prefer-dist -o
+      - run: npm ci
+      - run: npm run lint
