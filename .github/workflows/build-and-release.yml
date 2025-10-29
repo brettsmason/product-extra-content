@@ -29,8 +29,8 @@ jobs:
           extensions: zip, dom, simplexml
           coverage: none
 
-      - name: Install Composer dependencies (no-dev)
-        run: composer install --no-interaction --prefer-dist --no-dev -o
+      - name: Install Composer dependencies (with dev)
+        run: composer install --no-interaction --prefer-dist -o
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -38,8 +38,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Install Node dependencies
-        run: npm ci
+      - name: Install Node dependencies (skip postinstall)
+        run: npm ci --ignore-scripts
 
       - name: Build assets
         run: npm run build
@@ -49,6 +49,9 @@ jobs:
 
       - name: Translations
         run: npm run pot
+
+      - name: Reinstall Composer dependencies (no-dev) for packaging
+        run: composer install --no-interaction --prefer-dist --no-dev -o
 
       - name: Derive version from package.json
         run: echo "VERSION=$(jq -r .version package.json)" >> "$GITHUB_ENV"
