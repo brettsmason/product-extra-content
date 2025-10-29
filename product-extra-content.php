@@ -4,10 +4,10 @@
  * Plugin URI:        https://eighteen73.co.uk
  * Update URI:        https://eighteen73.co.uk
  * Description:       Display extra content for your WooCommerce products.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 6.8
  * Requires PHP:      7.4
- * Requires Plugins:
+ * Requires Plugins:  woocommerce
  * Author:            eighteen73
  * Author URI:        https://eighteen73.co.uk
  * Text Domain:       product-extra-content
