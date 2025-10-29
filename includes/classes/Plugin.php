@@ -28,6 +28,7 @@ class Plugin {
 		add_action( 'init', [ $this, 'register_blocks' ] );
 
 		PostType::instance()->setup();
+		Content::instance()->setup();
 	}
 
 	/**

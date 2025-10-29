@@ -6,14 +6,26 @@
 	"title": "Product Extra Content",
 	"category": "woocommerce",
 	"description": "Display extra content for your WooCommerce products.",
-	"example": {},
-	"attributes": {},
+	"usesContext": [ "postId" ],
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		}
+	},
 	"supports": {
-		"html": false
+		"html": false,
+		"align": [ "full" ],
+		"layout": {
+			"type": "object",
+			"default": {
+				"type": "constrained"
+			}
+		}
 	},
 	"textdomain": "product-extra-content",
 	"editorScript": "file:./index.js",
-	"style": "file:./style-index.css",
+	"editorStyle": "file:./index.css",
 	"render": "file:./render.php",
 	"viewScript": "file:./view.js"
 }
