@@ -1,15 +1,33 @@
 <?php
+/**
+ * Post type class.
+ *
+ * @package Eighteen73\ProductExtraContent
+ */
 
 namespace Eighteen73\ProductExtraContent;
 
+/**
+ * Post type class.
+ */
 class PostType {
 	use Singleton;
 
+	/**
+	 * Setup the post type.
+	 *
+	 * @return void
+	 */
 	public function setup(): void {
 		add_action( 'init', [ $this, 'register' ] );
 		add_action( 'init', [ $this, 'register_meta' ] );
 	}
 
+	/**
+	 * Register the product_extra post type.
+	 *
+	 * @return void
+	 */
 	public function register(): void {
 		$labels = [
 			'name'                  => _x( 'Extra Content', 'Post type general name', 'product-extra-content' ),
@@ -46,36 +64,48 @@ class PostType {
 			'hierarchical'       => false,
 			'menu_position'      => 20,
 			'supports'           => [ 'title', 'editor', 'custom-fields' ],
-			'show_in_rest'       => true
+			'show_in_rest'       => true,
 		];
 
 		register_post_type( 'product_extra', $args );
 	}
 
-	// Register product ids and category ids meta fields.
+	/**
+	 * Register meta fields for the product_extra post type.
+	 *
+	 * @return void
+	 */
 	public function register_meta(): void {
-		register_post_meta( 'product_extra', 'product_ids', [
-			'show_in_rest' => [
-				'schema' => [
-					'type'  => 'array',
-					'items' => [ 'type' => 'integer' ],
+		register_post_meta(
+			'product_extra',
+			'product_ids',
+			[
+				'show_in_rest' => [
+					'schema' => [
+						'type'  => 'array',
+						'items' => [ 'type' => 'integer' ],
+					],
 				],
-			],
-			'single'  => true,
-			'type'    => 'array',
-			'default' => [],
-		] );
+				'single'       => true,
+				'type'         => 'array',
+				'default'      => [],
+			]
+		);
 
-		register_post_meta( 'product_extra', 'category_ids', [
-			'show_in_rest' => [
-				'schema' => [
-					'type'  => 'array',
-					'items' => [ 'type' => 'integer' ],
+		register_post_meta(
+			'product_extra',
+			'category_ids',
+			[
+				'show_in_rest' => [
+					'schema' => [
+						'type'  => 'array',
+						'items' => [ 'type' => 'integer' ],
+					],
 				],
-			],
-			'single'  => true,
-			'type'    => 'array',
-			'default' => [],
-		] );
+				'single'       => true,
+				'type'         => 'array',
+				'default'      => [],
+			]
+		);
 	}
 }

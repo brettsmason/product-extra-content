@@ -13,5 +13,5 @@
 <div
 	<?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>
 >
-    <?php esc_html_e( 'Hello from Product Extra Content', 'product-extra-content' ); ?>
+	<?php esc_html_e( 'Hello from Product Extra Content', 'product-extra-content' ); ?>
 </div>

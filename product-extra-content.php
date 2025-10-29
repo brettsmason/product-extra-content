@@ -57,11 +57,3 @@ Plugin::instance()->setup();
 // Register activation and deactivation hooks.
 register_activation_hook( __FILE__, [ Plugin::class, 'activation' ] );
 register_deactivation_hook( __FILE__, [ Plugin::class, 'deactivation' ] );
-
-add_action('init', function() {
-       if (post_type_exists('product_extra_content')) {
-           error_log('Post type product_extra_content is registered');
-       } else {
-           error_log('Post type product_extra_content is NOT registered');
-       }
-   }, 20);
