@@ -77,13 +77,41 @@ jobs:
           git config --local user.name "${{ github.actor }}"
           git config --local user.email "${{ github.actor }}@users.noreply.github.com"
 
-      - name: Commit dist build and push dist branch
+      - name: Stage dist contents (only production files)
         if: env.TAG_EXISTS == 'false'
         run: |
-          git checkout -B dist
+          STAGING="$(mktemp -d)"
+          cp -a product-extra-content.php "$STAGING"/ || true
+          for p in includes languages build vendor assets; do
+            if [ -e "$p" ]; then
+              cp -a "$p" "$STAGING"/
+            fi
+          done
+          if [ -f README.md ]; then cp -a README.md "$STAGING"/; fi
+          if [ -f LICENSE ] || [ -f LICENSE.md ]; then cp -a LICENSE* "$STAGING"/; fi
+          echo "STAGING=$STAGING" >> "$GITHUB_ENV"
+
+      - name: Create clean dist branch and commit staged files
+        if: env.TAG_EXISTS == 'false'
+        run: |
+          git fetch origin
+          # Create or reset orphan dist branch
+          if git show-ref --verify --quiet refs/heads/dist; then
+            git checkout --orphan dist
+          else
+            git checkout --orphan dist
+          fi
+          # Remove all files from working tree
+          git rm -rf . || true
+          git clean -fdx || true
+          # Copy staged production files into repo root
+          rsync -a "$STAGING"/ .
+          # Add files (force-add ignored build/vendor)
           git add -A
-          git commit -m "dist: build for ${TAG}" || echo "No changes"
-          git push origin dist
+          git add -f build || true
+          git add -f vendor || true
+          git commit -m "dist: build for ${TAG}"
+          git push -f origin dist
 
       - name: Tag release at dist commit and push tag
         if: env.TAG_EXISTS == 'false'
