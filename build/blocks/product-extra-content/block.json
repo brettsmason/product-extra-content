@@ -1,0 +1,34 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "eighteen73/product-extra-content",
+  "version": "0.1.0",
+  "title": "Product Extra Content",
+  "category": "woocommerce",
+  "description": "Display extra content for your WooCommerce products.",
+  "usesContext": [
+    "postId"
+  ],
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "full"
+    ],
+    "layout": {
+      "type": "object",
+      "default": {
+        "type": "constrained"
+      }
+    }
+  },
+  "textdomain": "product-extra-content",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}
