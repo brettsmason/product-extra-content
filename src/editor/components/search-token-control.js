@@ -104,7 +104,11 @@ const SearchTokenControl = ({
 			}}
 			placeholder={
 				placeholder ||
-				sprintf(__('Search %s…', 'product-extra-content'), name)
+				sprintf(
+					/* translators: %s: The item type being searched (e.g., product or category) */
+					__('Search %s…', 'product-extra-content'),
+					name
+				)
 			}
 		/>
 	);
