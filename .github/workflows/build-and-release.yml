@@ -59,6 +59,11 @@ jobs:
           mkdir -p dist
           mv ./*.zip dist/
 
+      - name: Configure git user for tagging
+        run: |
+          git config --local user.name "${{ github.actor }}"
+          git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+
       - name: Create tag if missing
         run: |
           TAG="${VERSION}"
